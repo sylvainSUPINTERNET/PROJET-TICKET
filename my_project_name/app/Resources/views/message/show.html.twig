@@ -1,0 +1,20 @@
+    <h3>Message</h3>
+
+    <table>
+        <tbody>
+        {% for message in messages %}
+            <tr>
+                <th>Date</th>
+                <td>{% if message.date %}{{ message.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ message.content }}</td>
+            </tr>
+            <tr>
+                <th>User</th>
+                <td>{{ message.user }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>

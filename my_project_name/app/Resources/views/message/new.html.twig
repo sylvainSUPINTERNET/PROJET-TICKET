@@ -1,0 +1,6 @@
+<h3>Poster un message</h3>
+
+{{ form_start(form, { 'action': path('message_new', {'ticketId': ticket.id }), 'method': 'POST' }) }}
+        {{ form_widget(form) }}
+<input type="submit" value="Create" />
+{{ form_end(form) }}

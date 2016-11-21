@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ticket</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ticket.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ ticket.title }}</td>
+            </tr>
+            <tr>
+                <th>Author</th>
+                <td>{{ ticket.user }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if ticket.date %}{{ ticket.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ ticket.content }}</td>
+            </tr>
+            {% if is_granted('ROLE_ADMIN') %}
+                <h4>Allow user to see that ticket</h4>
+                <form method="POST" name="accesForm">
+                    <input type="number" name="idUserToAllow">
+                    <input type="submit">
+                </form>
+            {% else %}
+                <p>Only admin can attribute ticket to an other user</p>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ticket_index') }}">Back to the list</a>
+        </li>
+        {% if is_granted('ROLE_ADMIN') %}
+        <li>
+            {{ form_start(delete_form_ticket) }}
+            <input type="submit" value="Delete">
+            {{ form_end(delete_form_ticket) }}
+        </li>
+        {% else %}
+            <p>Only admin can delete ticket</p>
+        {% endif %}
+    </ul>
+
+    <div class="response">
+        {% include (":message:show.html.twig") %}
+    </div>
+
+    <div class="blockMessage">
+        {% include (":message:new.html.twig") %}
+    </div>
+
+    <ul>
+        <li>
+            <a href="{{ path('home') }}">Home</a>
+        </li>
+    </ul>
+{% endblock %}

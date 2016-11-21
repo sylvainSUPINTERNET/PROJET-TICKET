@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            My awesome Bundle
+        {% endblock title %}
+    </title>
+    <link rel="stylesheet" href="{{ asset('bundles/awesome/Css/style.css') }}">
+    {% block css %}
+    {% endblock css %}
+</head>
+<body>
+
+<header>
+    header
+</header>
+
+<div id="container">
+
+    <ul>
+        <li> <a href="{{ path('home')  }}">Home</a> </li>
+        <li> <a href="/login">Login / Logout</a></li>
+        {% if toDisplay == 1 %}
+            <li> <a href="/ticket">Ticket</a></li>
+            {% else %}
+                <p>Inscrivez vous OU connecter vous afin d'accéder à vos ticket</p>
+        {% endif %}
+    </ul>
+
+    {#
+    <ul>
+        <li> <a href="{{ path('home', {'name': name}) }}">Home</a> </li>
+        <li> <a href="{{ path('login', {'name': name}) }}">Login</a> </li>
+        <li> <a href="{{ path('profile', {'name': name}) }}">Profile</a> </li>
+    </ul>
+    #}
+
+    {% block content %}
+    {% endblock content %}
+
+    {% block body %}
+    {% endblock body %}
+
+</div>
+
+<footer>
+    footer
+</footer>
+
+{% block js %}
+{% endblock js %}
+
+</body>
+</html>
