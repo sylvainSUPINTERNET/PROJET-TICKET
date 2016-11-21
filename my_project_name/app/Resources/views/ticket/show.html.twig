@@ -2,8 +2,7 @@
 
 {% block body %}
     <h1>Ticket</h1>
-
-    <table>
+    <table class="table table-striped">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -28,27 +27,35 @@
             {% if is_granted('ROLE_ADMIN') %}
                 <h4>Allow user to see that ticket</h4>
                 <form method="POST" name="accesForm">
-                    <input type="number" name="idUserToAllow">
-                    <input type="submit">
+                    <input  type="number" name="idUserToAllow">
+                    <input class="btn btn-primary" type="submit">
                 </form>
             {% else %}
-                <p>Only admin can attribute ticket to an other user</p>
+                <div class="alert alert-danger" role="alert">Only admin can attribute a ticket to an user</div>
+            {% endif %}
+
+            {% if (msgError == "" and msgOk == "") %}
+                <p class="alert alert-warning">Select an ID of user you want allow access to that ticket</p>
+            {% elseif msgOk == "" %}
+                <div class="alert alert-danger" role="alert"><strong>{{ msgError }}</strong></div>
+                {% elseif msgError == "" %}
+                <div class="alert alert-success" role="alert"><strong>{{ msgOk }}</strong></div>
             {% endif %}
         </tbody>
     </table>
 
     <ul>
         <li>
-            <a href="{{ path('ticket_index') }}">Back to the list</a>
+            <a class="btn btn-primary" href="{{ path('ticket_index') }}">Back to the list</a>
         </li>
         {% if is_granted('ROLE_ADMIN') %}
         <li>
             {{ form_start(delete_form_ticket) }}
-            <input type="submit" value="Delete">
+            <input class="btn btn-primary" type="submit" value="Delete">
             {{ form_end(delete_form_ticket) }}
         </li>
         {% else %}
-            <p>Only admin can delete ticket</p>
+            <div class="alert alert-danger" role="alert">Only admin can delete that ticket</div>
         {% endif %}
     </ul>
 
@@ -59,10 +66,4 @@
     <div class="blockMessage">
         {% include (":message:new.html.twig") %}
     </div>
-
-    <ul>
-        <li>
-            <a href="{{ path('home') }}">Home</a>
-        </li>
-    </ul>
 {% endblock %}

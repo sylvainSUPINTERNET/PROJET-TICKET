@@ -7,25 +7,32 @@
             My awesome Bundle
         {% endblock title %}
     </title>
-    <link rel="stylesheet" href="{{ asset('bundles/awesome/Css/style.css') }}">
     {% block css %}
+        <link rel="stylesheet" href="{{ asset('bundles/awesome/Css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/awesome/Css/bootstrap.min.css') }}">
     {% endblock css %}
 </head>
 <body>
 
-<header>
-    header
-</header>
+<div class="page-header">
+    <h1 style="text-align: center">Projet ticket
+        <small>Joly Sylvain</small>
+    </h1>
+</div>
 
 <div id="container">
-
-    <ul>
-        <li> <a href="{{ path('home')  }}">Home</a> </li>
-        <li> <a href="/login">Login / Logout</a></li>
+    <ul class="nav nav-pills">
+        <li role="presentation"><a href="{{ path('home') }}">Home</a></li>
+        <li role="presentation"><a href="{{ path('fos_user_security_login') }}">Login / Logout</a></li>
         {% if toDisplay == 1 %}
-            <li> <a href="/ticket">Ticket</a></li>
-            {% else %}
+            <li role="presentation"><a href="{{ path('ticket_index') }}">Ticket</a></li>
+        {% else %}
+            <li role="presentation"><a href="{{ path('fos_user_registration_register') }}">Register</a></li>
+            <br>
+            <br>
+            <div class="alert alert-warning">
                 <p>Inscrivez vous OU connecter vous afin d'accéder à vos ticket</p>
+            </div>
         {% endif %}
     </ul>
 
@@ -46,10 +53,13 @@
 </div>
 
 <footer>
-    footer
 </footer>
 
 {% block js %}
+    <script src="{{ asset('bundles/awesome/js/jquery-3.1.1.min.js') }}"></script>
+
+    <script src="{{ asset('bundles/awesome/js/bootstrap.min.js') }}"></script>
+
 {% endblock js %}
 
 </body>

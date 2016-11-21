@@ -39,9 +39,9 @@ class TicketController extends Controller
         $currentUserId = $this->get('security.token_storage')->getToken()->getUser()->getId();
         $currentUserRole = $this->get('security.token_storage')->getToken()->getUser()->getRoles();
 
-        var_dump($currentUserName);
-        var_dump($currentUserId);
-        var_dump($currentUserRole);
+       // var_dump($currentUserName);
+        //var_dump($currentUserId);
+       // var_dump($currentUserRole);
 
 
         //var_dump($tickets = $em->getRepository('AwesomeBundle:Ticket')->findBy(array('id' => $currentUserId)));
@@ -136,24 +136,29 @@ class TicketController extends Controller
         $currentUserRole = $this->get('security.token_storage')->getToken()->getRoles();
         $currentUserName = $this->get('security.token_storage')->getToken()->getUserName();
 
-        var_dump("Get user à lid de POST sinon error puis ajouter ticket lier dans la BDD a cette user");
-        var_dump("Use many to many (nouvelle table creer toute seul ");
+        $msgError = "";
+        $msgOk = "";
+       // var_dump("Get user à lid de POST sinon error puis ajouter ticket lier dans la BDD a cette user");
+       // var_dump("Use many to many (nouvelle table creer toute seul ");
         if(!empty($_POST)){
             $userManager = $this->get('fos_user.user_manager');
-           var_dump($_POST['idUserToAllow']);
+         //  var_dump($_POST['idUserToAllow']);
 
             $user = $userManager->findUserBy(array('id' => $_POST['idUserToAllow']));
             if(!empty($user)){
-                var_dump($user->getUserName());
-                var_dump($id); //id article to link set dans la table de many to many id user selectionner / id article a voir
                 $em = $this->getDoctrine()->getManager();
+
+               // var_dump($user->getUserName());
+               // var_dump($id); //id article to link set dans la table de many to many id user selectionner / id article a voir
                 $user = $em->find('AwesomeBundle:User', $user);
+                $msgOk = "Utilisateur : " . $user->getUserName() . " can see that ticket now ! ";
                 $ticket = $em->find('AwesomeBundle:Ticket', $id);
                 $ticket->addUserCanSee($user);
                 $em->flush();
 
             }else{
-                var_dump("ID => ".$_POST['idUserToAllow']." est attribué à aucun utilisateur");
+               // var_dump("ID => ".$_POST['idUserToAllow']." est attribué à aucun utilisateur");
+                $msgError = "l'id ".$_POST['idUserToAllow']." est attribué à aucun utilisateur";
             }
         }
         return $this->render('ticket/show.html.twig', array(
@@ -162,6 +167,8 @@ class TicketController extends Controller
             'messages' => $messages,
             'delete_form_ticket' => $deleteFormTicket->createView(),
             'form' => $form->createView(),
+            "msgError" => $msgError,
+            "msgOk" => $msgOk,
         ));
     }
 

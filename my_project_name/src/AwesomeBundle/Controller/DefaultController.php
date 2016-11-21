@@ -14,7 +14,7 @@ class DefaultController extends Controller
     {
 
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
-        var_dump($currentUser);  // check if user is connected or not and display Ticket if connected
+        //var_dump($currentUser);  // check if user is connected or not and display Ticket if connected
 
         $toDisplay = 1;
         if($currentUser == 'anon.'){
@@ -23,7 +23,7 @@ class DefaultController extends Controller
             $toDisplay = 1;
         }
 
-        var_dump($toDisplay);
+               // var_dump($toDisplay);
         return $this->render('AwesomeBundle:Default:index.html.twig', array(
             'toDisplay' => $toDisplay
         ));
