@@ -34,6 +34,7 @@
                 <div class="alert alert-danger" role="alert">Only admin can attribute a ticket to an user</div>
             {% endif %}
 
+            {% if is_granted('ROLE_ADMIN') %}
             {% if (msgError == "" and msgOk == "") %}
                 <p class="alert alert-warning">Select an ID of user you want allow access to that ticket</p>
             {% elseif msgOk == "" %}
@@ -41,6 +42,7 @@
                 {% elseif msgError == "" %}
                 <div class="alert alert-success" role="alert"><strong>{{ msgOk }}</strong></div>
             {% endif %}
+        {% endif %}
         </tbody>
     </table>
 
