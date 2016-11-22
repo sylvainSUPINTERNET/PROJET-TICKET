@@ -114,6 +114,27 @@ class TicketController extends Controller
     public function showAction(Ticket $ticket, $id,Request $request)
     {
         $deleteFormTicket = $this->createDeleteForm($ticket);
+        $currentUserId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+        $currentUserRole = $this->get('security.token_storage')->getToken()->getUser()->getRoles();
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+
+        $userAccess = false;
+        if($ticket->getUser()->getId() == $currentUserId){
+            $userAccess = true;
+        }
+
+        if(in_array($currentUser, $ticket->getUserCanSee()->getValues())){
+            $userAccess = true;
+        }
+
+        if($currentUser->hasRole('ROLE_ADMIN')){
+            $userAccess = true;
+        }
+
+        if ($userAccess == false){
+            return $this->redirectToRoute("ticket_index");
+        }
 
         $message = new Message();
         $form = $this->createForm('AwesomeBundle\Form\MessageType', $message);
