@@ -51,7 +51,7 @@ class Ticket
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AwesomeBundle\Entity\User", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="AwesomeBundle\Entity\User", inversedBy="tickets")
      */
     private $userCanSee;
 

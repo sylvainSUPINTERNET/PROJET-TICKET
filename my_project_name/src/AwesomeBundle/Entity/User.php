@@ -19,6 +19,12 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="AwesomeBundle\Entity\Ticket", mappedBy="userCanSee")
+     */
+    protected $tickets;
+
+
     public function __construct()
     {
         parent::__construct();
@@ -34,4 +40,38 @@ class User extends BaseUser
          */
     }
 
+
+    /**
+     * Add ticket
+     *
+     * @param \AwesomeBundle\Entity\Ticket $ticket
+     *
+     * @return User
+     */
+    public function addTicket(\AwesomeBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets[] = $ticket;
+
+        return $this;
+    }
+
+    /**
+     * Remove ticket
+     *
+     * @param \AwesomeBundle\Entity\Ticket $ticket
+     */
+    public function removeTicket(\AwesomeBundle\Entity\Ticket $ticket)
+    {
+        $this->tickets->removeElement($ticket);
+    }
+
+    /**
+     * Get tickets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
 }

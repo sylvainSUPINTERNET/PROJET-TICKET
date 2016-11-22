@@ -30,21 +30,11 @@ class TicketController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
-
-        //Verif avant si user nul or not if user is null render login ELSE render $ticket
-
-
-
         $currentUserName = $this->get('security.token_storage')->getToken()->getUser()->getUserName();
         $currentUserId = $this->get('security.token_storage')->getToken()->getUser()->getId();
         $currentUserRole = $this->get('security.token_storage')->getToken()->getUser()->getRoles();
 
-       // var_dump($currentUserName);
-        //var_dump($currentUserId);
-       // var_dump($currentUserRole);
 
-
-        //var_dump($tickets = $em->getRepository('AwesomeBundle:Ticket')->findBy(array('id' => $currentUserId)));
 
         if($currentUserRole[0] == 'ROLE_USER'){
             $tickets = $em->getRepository('AwesomeBundle:Ticket')->findBy(array(
@@ -55,7 +45,7 @@ class TicketController extends Controller
             foreach($tickets as $ticket) {
                 var_dump($ticket->getUserCanSee());
                 $ticketsUser[] = $em->getRepository('AwesomeBundle:Ticket')->findBy(array(
-                    'user' => $ticket->getUserCanSee() //user_id (ref to ManyToOne into Ticket.php
+                    'user' => $ticket->getUserCanSee()
                 ));
             }
 
@@ -65,13 +55,18 @@ class TicketController extends Controller
             //get ticket for that user
             //display sur twig if exist else no
 
+            $user = $em->find('AwesomeBundle:User', $currentUser);
+            $ticketsAccess = $user->getTickets();
+
          }else{
              $tickets = $em->getRepository('AwesomeBundle:Ticket')->findAll();
+             $ticketsAccess = '';
          }
 
 
         return $this->render('ticket/index.html.twig', array(
-            'tickets' => $tickets
+            'tickets' => $tickets,
+            'ticketAccessByAdmin' => $ticketsAccess
         ));
     }
 
@@ -132,7 +127,6 @@ class TicketController extends Controller
         $messages = $messageRepository->findByTicket($ticket);
 
         $currentUser = $this->get('security.token_storage')->getToken()->getUser();
-       // var_dump($currentUser);  // check if user is connected or not and display Ticket if connected
         $currentUserRole = $this->get('security.token_storage')->getToken()->getRoles();
         $currentUserName = $this->get('security.token_storage')->getToken()->getUserName();
 
@@ -151,7 +145,6 @@ class TicketController extends Controller
                 $em->flush();
 
             }else{
-               // var_dump("ID => ".$_POST['idUserToAllow']." est attribué à aucun utilisateur");
                 $msgError = "l'id ".$_POST['idUserToAllow']." est attribué à aucun utilisateur";
             }
         }

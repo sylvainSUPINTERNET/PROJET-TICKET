@@ -19,6 +19,12 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="AwesomeBundle\Entity\Ticket", mappedBy="userCanSee")
+     */
+    protected $tickets;
+
+
     public function __construct()
     {
         parent::__construct();
