@@ -116,7 +116,7 @@ class TicketController extends Controller
      * @Route("/{id}", name="ticket_show")
      * @Method({"GET", "POST"})
      */
-    public function showAction(Ticket $ticket, $id)
+    public function showAction(Ticket $ticket, $id,Request $request)
     {
         $deleteFormTicket = $this->createDeleteForm($ticket);
 
@@ -138,18 +138,12 @@ class TicketController extends Controller
 
         $msgError = "";
         $msgOk = "";
-       // var_dump("Get user à lid de POST sinon error puis ajouter ticket lier dans la BDD a cette user");
-       // var_dump("Use many to many (nouvelle table creer toute seul ");
-        if(!empty($_POST)){
+        $getUserToAllow = $request->get('idUserToAllow');
+        if(!empty($getUserToAllow)){
             $userManager = $this->get('fos_user.user_manager');
-         //  var_dump($_POST['idUserToAllow']);
-
             $user = $userManager->findUserBy(array('id' => $_POST['idUserToAllow']));
             if(!empty($user)){
                 $em = $this->getDoctrine()->getManager();
-
-               // var_dump($user->getUserName());
-               // var_dump($id); //id article to link set dans la table de many to many id user selectionner / id article a voir
                 $user = $em->find('AwesomeBundle:User', $user);
                 $msgOk = "Utilisateur : " . $user->getUserName() . " can see that ticket now ! ";
                 $ticket = $em->find('AwesomeBundle:Ticket', $id);
