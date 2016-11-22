@@ -3,20 +3,23 @@
 {% block body %}
     <h1>Ticket list</h1>
 
+    <a class="btn btn-primary" href="{{ path('ticket_new') }}">Create a new ticket</a>
+
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Date</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for ticket in tickets %}
             <tr>
-                <td><a class="btn btn-primary" href="{{ path('ticket_show', { 'id': ticket.id }) }}">{{ ticket.id }}</a></td>
+                <td><a class="btn btn-primary" href="{{ path('ticket_show', { 'id': ticket.id }) }}">{{ ticket.id }}</a>
+                </td>
                 <td>{{ ticket.title }}</td>
                 <td>{{ ticket.content }}</td>
                 <td>{% if ticket.date %}{{ ticket.date|date('Y-m-d H:i:s') }}{% endif %}</td>
@@ -26,9 +29,10 @@
                             <a class="btn btn-primary" href="{{ path('ticket_show', { 'id': ticket.id }) }}">show</a>
                         </li>
                         {% if is_granted('ROLE_ADMIN') %}
-                        <li>
-                            <a class="btn btn-primary" href="{{ path('ticket_edit', { 'id': ticket.id }) }}">edit</a>
-                        </li>
+                            <li>
+                                <a class="btn btn-primary"
+                                   href="{{ path('ticket_edit', { 'id': ticket.id }) }}">edit</a>
+                            </li>
                         {% else %}
                             <div class="alert alert-danger" role="alert">Only admint can edit</div>
                         {% endif %}
@@ -53,9 +57,10 @@
         </tr>
         </thead>
         <tbody>
-        {% for ticket in ticketAccessByAdmin  %}
+        {% for ticket in ticketAccessByAdmin %}
             <tr>
-                <td><a class="btn btn-primary" href="{{ path('ticket_show', { 'id': ticket.id }) }}">{{ ticket.id }}</a></td>
+                <td><a class="btn btn-primary" href="{{ path('ticket_show', { 'id': ticket.id }) }}">{{ ticket.id }}</a>
+                </td>
                 <td>{{ ticket.title }}</td>
                 <td>{{ ticket.content }}</td>
                 <td>{% if ticket.date %}{{ ticket.date|date('Y-m-d H:i:s') }}{% endif %}</td>
@@ -66,7 +71,8 @@
                         </li>
                         {% if is_granted('ROLE_ADMIN') %}
                             <li>
-                                <a class="btn btn-primary" href="{{ path('ticket_edit', { 'id': ticket.id }) }}">edit</a>
+                                <a class="btn btn-primary"
+                                   href="{{ path('ticket_edit', { 'id': ticket.id }) }}">edit</a>
                             </li>
                         {% else %}
                             <div class="alert alert-danger" role="alert">Only admint can edit</div>
@@ -78,9 +84,4 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a class="btn btn-primary" href="{{ path('ticket_new') }}">Create a new ticket</a>
-        </li>
-    </ul>
 {% endblock %}
